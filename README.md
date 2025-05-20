@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next-Movies App
 
-## Getting Started
+Una aplicación web moderna para explorar películas utilizando la API de TMDB (The Movie Database).
 
-First, run the development server:
+## 📋 Características
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Catálogo de películas**: Explora las películas populares, mejor valoradas y en cartelera
+- **Detalles de películas**: Visualiza información detallada de cada película
+- **Gestión de favoritos**: Guarda tus películas favoritas en el navegador usando localStorage
+- **Diseño responsivo**: Experiencia de usuario optimizada para todos los dispositivos
+- **Tema oscuro/claro**: Interfaz adaptable a las preferencias del usuario
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Tecnologías
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Este proyecto está construido con tecnologías modernas:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- [Next.js](https://nextjs.org/) - Framework de React
+- [TypeScript](https://www.typescriptlang.org/) - Tipado estático para JavaScript
+- [Tailwind CSS](https://tailwindcss.com/) - Framework CSS utilitario
+- [ESLint](https://eslint.org/) - Linter para JavaScript/TypeScript
+- [TMDB API](https://www.themoviedb.org/documentation/api) - API para datos de películas
 
-## Learn More
+## ⚙️ Instalación
 
-To learn more about Next.js, take a look at the following resources:
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/tu-usuario/next-movies.git
+   cd next-movies
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. Instala las dependencias:
+   ```bash
+   npm install
+   # o
+   yarn install
+   # o
+   pnpm install
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. Crea un archivo `.env.local` en la raíz del proyecto con tu clave API de TMDB:
+   ```
+    TMDB_API_TOKEN=tu_clave_api_aquí
+   ```
 
-## Deploy on Vercel
+   > Puedes obtener una clave API gratuita registrándote en [TMDB](https://www.themoviedb.org/signup)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. Inicia el servidor de desarrollo:
+   ```bash
+   npm run dev
+   # o
+   yarn dev
+   # o
+   pnpm dev
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+5. Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
+
+
+## 🔧 Scripts disponibles
+
+- `npm run dev` - Inicia el servidor de desarrollo
+- `npm run build` - Construye la aplicación para producción
+- `npm run start` - Inicia la aplicación construida
+- `npm run lint` - Ejecuta el linter
+
+## 🌐 API
+
+La aplicación utiliza la API de TMDB para obtener información sobre películas. Las principales endpoints utilizados son:
+
+- `/movie/popular` - Películas populares
+- `/movie/top_rated` - Películas mejor valoradas
+- `/movie/now_playing` - Películas en cartelera
+
+## 📱 Funcionalidades
+
+### Exploración de películas
+Navega por categorías como populares, mejor valoradas y en cartelera.
+
+### Detalles de películas
+Accede a información detallada de cada película, incluyendo sinopsis, valoración, género y más.
+
+### Gestión de favoritos
+Añade películas a tus favoritos para acceder a ellas rápidamente más tarde. Esta función utiliza localStorage para guardar tus preferencias en el navegador.
+
+## 🤝 Contribuir
+
+Las contribuciones son bienvenidas. Para cambios importantes, abre primero un issue para discutir lo que te gustaría cambiar.
+
+## 📄 Licencia
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+---
+
+Desarrollado con ❤️ usando Next.js y la API de TMDB
