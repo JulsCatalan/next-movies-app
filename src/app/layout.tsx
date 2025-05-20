@@ -5,6 +5,9 @@ import Footer from '@/components/Footer';
 export const metadata = {
   title: 'Next Movies App',
   description: 'Aplicación de datos de películas con Next.js',
+  icons: {
+    icon: '/movie.svg',
+  },
 };
 
 export default function RootLayout({
@@ -16,8 +19,7 @@ export default function RootLayout({
     <html lang="es" className="h-full">
       <body className="h-full text-white">
         <Navbar />
-        
-        {/* Añadir padding-top para compensar el navbar fijo */}
+      
         <main className="pt-16">{children}</main>
         
         <Footer />
