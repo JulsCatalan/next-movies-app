@@ -103,14 +103,6 @@ export default async function HomePage() {
               {featuredMovie.overview}
             </p>
             
-            <div className="flex space-x-3 mt-4">
-              <Link 
-                href={`/movies/${featuredMovie.id}`} 
-                className="bg-movie-accent hover:bg-movie-accent-hover text-white py-2 px-4 rounded-md flex items-center transition-colors"
-              >
-                Ver detalles
-              </Link>
-            </div>
           </div>
         )}
       </div>

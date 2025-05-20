@@ -97,7 +97,7 @@ export default async function NowPlayingMoviesPage({ searchParams }:any) {
     : moviesData.results;
 
   return (
-    <div className="min-h-screen pt-20">
+    <div className="min-h-screen pt-6">
       {/* Hero Section */}
       {featuredMovie && <HeroSection movie={featuredMovie} />}
       
