@@ -1,103 +1,139 @@
-import Image from "next/image";
+import Link from 'next/link';
+import Image from 'next/image';
+import { getUpcomingMovies, getNowPlayingMovies, getTopRatedMovies } from '@/services/tmdb-api';
+import MovieCard from '@/components/MovieCard';
+import { Movie } from '@/types/Movie';
 
-export default function Home() {
+// Componente para mostrar un slider horizontal de películas
+function MovieSlider({ title, movies }: { title: string; movies: Movie[] }) {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="mb-12">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold text-white">{title}</h2>
+      </div>
+      
+      {/* Contenedor con desplazamiento horizontal */}
+      <div className="relative group">
+        {/* Carrusel de películas */}
+        <div className="flex overflow-x-auto gap-4 pb-4 scrollbar-hide snap-x snap-mandatory">
+          {movies.map(movie => (
+            <div key={movie.id} className="flex-none w-[180px] snap-start">
+              <MovieCard movie={movie} />
+            </div>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+    </div>
+  );
+}
+
+// Componente de página de inicio
+export default async function HomePage() {
+  // Obtener datos en paralelo
+  const [upcomingData, topRatedData, nowPlayingData] = await Promise.all([
+    getUpcomingMovies(),
+    getTopRatedMovies(),
+    getNowPlayingMovies()
+  ]);
+  
+  // Extraer los resultados de las respuestas de la API
+  const upcomingMovies = upcomingData.results.slice(0, 25);
+  const topRatedMovies = topRatedData.results.slice(0, 25);
+  const nowPlayingMovies = nowPlayingData.results.slice(0, 25);
+  
+  // Determinar la película destacada (primera película mejor valorada)
+  const featuredMovie = topRatedMovies[0];
+  
+  return (
+    <div>
+      {/* Sección Hero con película destacada */}
+      <div className="relative h-[60vh] md:h-[80vh] w-full">
+        {/* Background image */}
+        <div className="absolute inset-0">
+          {featuredMovie?.backdrop_path ? (
+            <Image
+              src={`https://image.tmdb.org/t/p/original${featuredMovie.backdrop_path}`}
+              alt={featuredMovie.title}
+              fill
+              priority
+              className="object-cover"
+              sizes="100vw"
+            />
+          ) : (
+            <div className="w-full h-full bg-zinc-900 flex items-center justify-center">
+              <Image
+                src={'https://davidkoepp.com/wp-content/themes/blankslate/images/Movie%20Placeholder.jpg'}
+                alt='Pelicula sin Poster'
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover"
+              />
+            </div>
+          )}
+        </div>
+        
+        {/* Dark overlay gradient */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
+        
+        {/* Bottom fade to background */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-movie-background to-transparent" />
+        
+        {/* Content */}
+        {featuredMovie && (
+          <div className="relative h-full flex flex-col justify-end p-6 md:p-12 max-w-3xl">
+            <div className="flex items-center space-x-4 mb-3">
+              <span className="bg-movie-accent py-1 px-3 text-sm font-medium rounded-full">
+                Destacado
+              </span>
+              <div className="flex items-center text-movie-rating">
+                <span className="font-bold mr-1">{featuredMovie.vote_average.toFixed(1)}</span>
+                <span className="text-sm text-white/70">/ 10</span>
+              </div>
+              <span className="text-sm text-white/70">
+                {new Date(featuredMovie.release_date).getFullYear()}
+              </span>
+            </div>
+            
+            <h1 className="text-3xl md:text-5xl font-bold mb-2 text-white">
+              {featuredMovie.title}
+            </h1>
+            
+            {/* Descripción */}
+            <p className="text-white/80 mb-4 line-clamp-2 md:line-clamp-3">
+              {featuredMovie.overview}
+            </p>
+            
+            <div className="flex space-x-3 mt-4">
+              <Link 
+                href={`/movies/${featuredMovie.id}`} 
+                className="bg-movie-accent hover:bg-movie-accent-hover text-white py-2 px-4 rounded-md flex items-center transition-colors"
+              >
+                Ver detalles
+              </Link>
+            </div>
+          </div>
+        )}
+      </div>
+      
+      <div className="container mx-auto px-4 py-10">
+        {/* Próximos estrenos */}
+        <MovieSlider 
+          title="Próximos estrenos" 
+          movies={upcomingMovies}
+        />
+        
+        {/* Películas mejor valoradas */}
+        <MovieSlider 
+          title="Mejor valoradas" 
+          movies={topRatedMovies}
+        />
+        
+        {/* Películas en cartelera */}
+        <MovieSlider 
+          title="En cartelera" 
+          movies={nowPlayingMovies} 
+        />
+      </div>
     </div>
   );
 }
